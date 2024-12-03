@@ -25,7 +25,7 @@ def sign(v):
     if v == 0: return 0
 
 
-# O(n))
+# O(n)
 def _report_safe(report, dampen: bool):
     deltas = calculate_deltas(report)
     # Check sufficient condition.
@@ -38,7 +38,7 @@ def _report_safe(report, dampen: bool):
     # These are indices which will be used to try check if report is valid after respective element is removed.
     # Only one element is removed for one check i.e. we perorm `len(indices_to_remove)` checks where each check checks report with one element missing.
     indices_to_remove = []
-    for i in range(len(report)):        # Maximum complexity of O(n) * O(m) = O(n*m).
+    for i in range(len(report)):        # Maximum complexity of O(n) * O(m) = O(n*m). We do at most n iterations and 2 * O(n) report checks in total
         # Check places where delta is zero.
         if not indices_to_remove and i < len(deltas) and deltas[i] == 0:
             # We need to remove one of the elements. It doesn't matter which one since they are the same.
@@ -211,7 +211,7 @@ def _report_safe(report, dampen: bool):
                 # -i---o---------
                 assert i == len(report) - 3
 
-                indices_to_remove = [i + 1]
+                indices_to_remove = [i, i + 2]
         # Check places where `abs(delta) > 3`.
         # We do this last because if we did it first it could shadow a possible pattern which needs to be resolved regardledd of delta magnitude.
         if not indices_to_remove and i < len(deltas) and abs(deltas[i]) > 3:
@@ -229,8 +229,7 @@ def _report_safe(report, dampen: bool):
                     indices_to_remove = [i + 1]
 
         if indices_to_remove:
-            assert len(indices_to_remove) <= 2      # This ensures algoritm complexity in this iteration is bounded to O(n).
-                                                    # If we were to put all indices into `indices_to_remove` then algorithms degenerates into brute force.
+            assert len(indices_to_remove) <= 2      # This ensures algoritm complexity in this iteration is bounded to O(1).
             return any(_report_safe(report[:i] + report[i + 1:], dampen=False) for i in indices_to_remove)      # Maximum complexity of 2 * O(m), m = size of report.
 
     return False
