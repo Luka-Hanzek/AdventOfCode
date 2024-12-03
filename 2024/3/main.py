@@ -15,7 +15,6 @@ computer = computer.Computer()
 memory = read_input()
 
 program = extract_instructions(memory, syntax='mul\([\d]+,[\d]+\)')
-program.append("asdsd")
 computer.load_program(program)
 while computer.clock():
     pass
